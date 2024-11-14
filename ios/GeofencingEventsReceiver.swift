@@ -24,21 +24,29 @@ class GeofencingEventsReceiver: NSObject {
             // check first if the POIregion.origin is equal to "POI"
             if POIregion.origin == "POI"
             {
+                let eventAttributes:BatchEventAttributes = BatchEventAttributes()
+                
+                eventAttributes.put(POIregion.date, forKey: "date")
+                eventAttributes.put(POIregion.identifier, forKey: "id")
+                eventAttributes.put(POIregion.latitude, forKey: "latitude")
+                eventAttributes.put(POIregion.longitude, forKey: "longitude")
+                eventAttributes.put(POIregion.radius, forKey: "radius")
+                
+                
                 if let POI = POIs.getPOIbyIdStore(idstore: POIregion.identifier) as POI? {
-                    // Event with custom attributes
-                    BatchProfile.trackEvent(name: batchEventName, attributes: BatchEventAttributes { data in
-                        data.put(POI.idstore ?? "", forKey: "identifier")
-                        data.put(POI.name ?? "", forKey: "name")
-//                        more info
-//                        if let more_info = POI.jsonData{
-//                            let prettyPrintedString = String(data: more_info, encoding: .utf8)!
-//                            data.put(prettyPrintedString, forKey: "more_info")
-//                        }
-                    })
+                    eventAttributes.put(POI.name ?? "-", forKey: "name")
+                    eventAttributes.put(POI.idstore ?? "-", forKey: "idStore")
+                    eventAttributes.put(POI.city ?? "-", forKey: "city")
+                    eventAttributes.put(POI.zipCode ?? "-", forKey: "zipCode")
+                    eventAttributes.put(POI.distance, forKey: "distance")
+                    eventAttributes.put(POI.countryCode ?? "-", forKey: "country_code")
+                    eventAttributes.put(POI.address ?? "-", forKey: "address")
+                    eventAttributes.put(POI.tags ?? "-", forKey: "tags")
+                    eventAttributes.put(POI.types ?? "-", forKey: "types")
+                    POI.user_properties.forEach { eventAttributes.put($0.value as? String ?? "-", forKey: $0.key) }
                 }
-                else {
-                    // error: Related POI doesn't exist
-                }
+            
+                BatchProfile.trackEvent(name: batchEventName,attributes:eventAttributes)
             }
             
         }
