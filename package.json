@@ -10,6 +10,7 @@
     "ios",
     "cpp",
     "src",
+    "app.plugin.js",
     "*.podspec",
     "CHANGELOG.md",
     "expo-module.config.json",
