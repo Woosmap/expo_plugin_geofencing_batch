@@ -4,44 +4,12 @@
   "description": "Woosmap geofencing and batch integration",
   "main": "build/index.js",
   "types": "build/index.d.ts",
-  "files": [
-    "build",
-    "android",
-    "ios",
-    "cpp",
-    "src",
-    "app.plugin.js",
-    "*.podspec",
-    "CHANGELOG.md",
-    "expo-module.config.json",
-    ".eslintrc.js",
-    "tsconfig.json",
-    "!ios/build",
-    "!android/build",
-    "!android/gradle",
-    "!android/gradlew",
-    "!android/gradlew.bat",
-    "!android/local.properties",
-    "!**/__tests__",
-    "!**/__fixtures__",
-    "!**/__mocks__",
-    "!**/.*"
-  ],
-  "scripts": {
-    "build": "expo-module build",
-    "clean": "expo-module clean",
-    "lint": "expo-module lint",
-    "prepare": "expo-module prepare",
-    "prepublishOnly": "expo-module prepublishOnly",
-    "expo-module": "expo-module",
-    "open:ios": "xed example/ios",
-    "open:android": "open -a \"Android Studio\" example/android"
-  },
+  "sideEffects": false,
   "keywords": [
     "react-native",
     "expo",
     "@woosmap/expo-plugin-geofencing-batch",
-    "WoosmapExpoPluginGeofencingBatch"
+    "ExpoPluginGeofencingBatch"
   ],
   "repository": {
       "type": "git",
@@ -53,16 +21,18 @@
   "author": "Woosmap <operations@woosmap.com> (https://www.woosmap.com/en/contact)",
   "license": "MIT",
   "homepage": "https://github.com/Woosmap/geofencing-react-native-plugin#readme",
+  "scripts": {
+    "build": "expo-module build",
+    "clean": "expo-module clean"
+  },
   "publishConfig": {
     "registry": "https://registry.npmjs.org/"
   },
-  "private": false,
   "dependencies": {},
   "devDependencies": {
-    "@types/react": "~18.3.12",
-    "expo-module-scripts": "^4.0.2",
-    "expo": "~52.0.0",
-    "react-native": "0.76.0"
+    "@types/react": "^18.0.25",
+    "expo-module-scripts": "^3.5.2",
+    "expo-modules-core": "^1.12.24"
   },
   "peerDependencies": {
     "expo": "*",

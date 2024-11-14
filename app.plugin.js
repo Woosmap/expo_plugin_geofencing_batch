@@ -1,1 +1,1 @@
-module.exports = require("./build/nativeSetup");
+module.exports = require("./build/index");
