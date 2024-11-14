@@ -15,10 +15,12 @@ Pod::Spec.new do |s|
     :tvos => '15.1'
   }
   s.swift_version  = '5.4'
-  s.source         = { git: 'https://www.woosmap.com' }
+  s.source         = { git: '' }
   s.static_framework = true
 
   s.dependency 'ExpoModulesCore'
+  s.dependency "WoosmapGeofencing", '~> 4.0'
+  s.dependency 'Batch', '~> 2.0.0'
 
   # Swift/Objective-C compatibility
   s.pod_target_xcconfig = {

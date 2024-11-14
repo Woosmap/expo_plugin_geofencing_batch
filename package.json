@@ -1,9 +1,31 @@
 {
   "name": "@woosmap/expo-plugin-geofencing-batch",
-  "version": "0.1.0",
-  "description": "Woosmap geofenceing and batch integration",
+  "version": "0.1.0-beta.5",
+  "description": "Woosmap geofencing and batch integration",
   "main": "build/index.js",
   "types": "build/index.d.ts",
+  "files": [
+    "build",
+    "android",
+    "ios",
+    "cpp",
+    "src",
+    "*.podspec",
+    "CHANGELOG.md",
+    "expo-module.config.json",
+    ".eslintrc.js",
+    "tsconfig.json",
+    "!ios/build",
+    "!android/build",
+    "!android/gradle",
+    "!android/gradlew",
+    "!android/gradlew.bat",
+    "!android/local.properties",
+    "!**/__tests__",
+    "!**/__fixtures__",
+    "!**/__mocks__",
+    "!**/.*"
+  ],
   "scripts": {
     "build": "expo-module build",
     "clean": "expo-module clean",
@@ -33,6 +55,7 @@
   "publishConfig": {
     "registry": "https://registry.npmjs.org/"
   },
+  "private": false,
   "dependencies": {},
   "devDependencies": {
     "@types/react": "~18.3.12",

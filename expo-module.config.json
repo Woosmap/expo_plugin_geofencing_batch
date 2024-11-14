@@ -1,13 +1,13 @@
 {
   "platforms": [
     "apple",
-    "android",
-    "web"
+    "android"
   ],
   "apple": {
     "modules": [
       "WoosmapExpoPluginGeofencingBatchModule"
-    ]
+    ],
+    "appDelegateSubscribers": ["WoosmapGeofencingAppDelegate"]
   },
   "android": {
     "modules": [
