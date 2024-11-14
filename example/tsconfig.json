@@ -1,0 +1,10 @@
+{
+  "extends": "expo/tsconfig.base",
+  "compilerOptions": {
+    "strict": true,
+    "paths": {
+      "@woosmap/expo-plugin-geofencing-batch": ["../src/index"],
+      "@woosmap/expo-plugin-geofencing-batch/*": ["../src/*"]
+    }
+  }
+}
