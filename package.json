@@ -1,6 +1,6 @@
 {
   "name": "@woosmap/expo-plugin-geofencing-batch",
-  "version": "0.1.0-beta.7",
+  "version": "0.1.0",
   "description": "Woosmap geofencing and batch integration",
   "main": "build/index.js",
   "types": "build/index.d.ts",
@@ -12,8 +12,8 @@
     "ExpoPluginGeofencingBatch"
   ],
   "repository": {
-      "type": "git",
-      "url": "git+https://github.com/Woosmap/geofencing-react-native-plugin.git"
+    "type": "git",
+    "url": "git+https://github.com/Woosmap/geofencing-react-native-plugin.git"
   },
   "bugs": {
     "url": "https://github.com/Woosmap/geofencing-react-native-plugin/issues"
