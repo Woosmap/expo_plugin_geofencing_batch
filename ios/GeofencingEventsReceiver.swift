@@ -43,7 +43,7 @@ class GeofencingEventsReceiver: NSObject {
                     eventAttributes.put(POI.address ?? "-", forKey: "address")
                     eventAttributes.put(POI.tags ?? "-", forKey: "tags")
                     eventAttributes.put(POI.types ?? "-", forKey: "types")
-                    POI.user_properties.forEach { eventAttributes.put($0.value as? String ?? "-", forKey: $0.key) }
+                    POI.user_properties.forEach { eventAttributes.put("user_properties.\($0.value as? String ?? "-")", forKey: $0.key) }
                 }
             
                 BatchProfile.trackEvent(name: batchEventName,attributes:eventAttributes)
