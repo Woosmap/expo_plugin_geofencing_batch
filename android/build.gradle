@@ -41,3 +41,18 @@ android {
     abortOnError false
   }
 }
+
+dependencies {
+  // For < 0.71, this will be from the local maven repo
+  // For > 0.71, this will be replaced by `com.facebook.react:react-android:$version` by react gradle plugin
+  //noinspection GradleDynamicVersion
+  implementation 'com.google.android.gms:play-services-location:21.0.1'
+  implementation 'com.google.code.gson:gson:2.8.8'
+  implementation "com.github.Woosmap:geofencing-core-android-sdk:core_geofence_2.+"
+  implementation "com.webgeoservices.woosmapgeofencing:woosmap-mobile-sdk:4.+"
+  implementation 'com.google.android.gms:play-services-maps:18.1.0'
+  implementation 'androidx.room:room-runtime:2.2.4'
+  annotationProcessor 'androidx.room:room-compiler:2.2.4'
+  implementation 'androidx.room:room-rxjava2:2.2.4'
+  implementation 'androidx.room:room-guava:2.2.4'
+}
