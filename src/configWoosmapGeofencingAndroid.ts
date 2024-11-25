@@ -17,6 +17,31 @@ const withSDKAndroidManifest: ConfigPlugin<ConfigProps> = (config, props) => {
       "MY_CUSTOM_API_KEY",
       props.apiKey,
     );
+
+    // Add location and BLE permissions to the <manifest> tag
+    const permissions = [
+      "android.permission.ACCESS_COARSE_LOCATION",
+      "android.permission.ACCESS_FINE_LOCATION",
+      "android.permission.ACCESS_BACKGROUND_LOCATION",
+      "android.permission.BLUETOOTH",
+      "android.permission.BLUETOOTH_ADMIN",
+      "android.permission.BLUETOOTH_SCAN",
+    ];
+
+    // Ensure each permission is added only once
+    permissions.forEach((permission) => {
+      if (
+        !config.modResults.manifest["uses-permission"]?.find(
+          (p: any) => p["$"]["android:name"] === permission,
+        )
+      ) {
+        config.modResults.manifest["uses-permission"] = [
+          ...(config.modResults.manifest["uses-permission"] || []),
+          { $: { "android:name": permission } },
+        ];
+      }
+    });
+
     return config;
   });
 
