@@ -22,6 +22,6 @@
       },
       "package": "expo.modules.geofencingbatchplugin.example"
     },
-    "plugins": [["../app.plugin.js", { "apiKey": "woosmap private key", "locationAlwaysAndWhenInUsePermission":"app Location new" }]]
+    "plugins": [["../app.plugin.js", { "apiKey": "woosmap private key", "batchApiKey": "batch key", "locationAlwaysAndWhenInUsePermission":"app Location new" }]]
   }
 }
