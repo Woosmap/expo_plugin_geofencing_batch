@@ -47,7 +47,7 @@ export default function App() {
   };
 
   const setWoosmapKey = async () => {
-    const privateKeyWoosmapAPI = "fa3cff08-d288-4ff6-99a6-d98fffb7e7d6"; // Replace with your actual key
+    const privateKeyWoosmapAPI = ""; // Replace with your actual key
     try {
       const value = await WoosmapGeofencing.setWoosmapApiKey(privateKeyWoosmapAPI);
       Alert.alert("Success", `Woosmap API Key Set: ${value}`);
