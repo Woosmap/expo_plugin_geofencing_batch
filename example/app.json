@@ -23,7 +23,7 @@
       "package": "expo.modules.geofencingbatchplugin.example"
     },
     "plugins": [
-      ["../app.plugin.js", { "apiKey": "woosmap private key", "batchApiKey": "batch key", "locationAlwaysAndWhenInUsePermission":"app Location new" }],
+      ["../app.plugin.js", { "apiKey": "woosmap private key", "locationAlwaysAndWhenInUsePermission":"app Location new" }],
       [
         "@batch.com/react-native-plugin",
         {

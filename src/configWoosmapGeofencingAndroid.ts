@@ -20,27 +20,6 @@ const withSDKAndroidManifest: ConfigPlugin<ConfigProps> = (config, props) => {
       props.apiKey,
     );
 
-    // Debug log to verify if batchApiKey is passed
-    console.log("Batch API Key:", props.batchApiKey);
-
-    // Check if batchApiKey exists and add BATCH-API-KEY metadata
-    if (props.batchApiKey) {
-      addMetaDataItemToMainApplication(
-        mainApplication,
-        "BATCH_API_KEY",
-        props.batchApiKey,
-      );
-
-      console.log(
-        `Added BATCH_API_KEY metadata with value: ${props.batchApiKey}`
-      );
-    }
-    else{
-      console.warn("No batchApiKey provided. Skipping metadata addition.");
-    }
-
-    
-
     // Add location and BLE permissions to the <manifest> tag
     const permissions = [
       "android.permission.ACCESS_COARSE_LOCATION",
