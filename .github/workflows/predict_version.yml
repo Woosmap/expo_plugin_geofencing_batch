@@ -114,6 +114,12 @@ jobs:
       run: |
             echo "::error::You have miss to update whatsnew.md with latest changes"
             exit 1
+
+    - name: 'Update version'
+      if: ${{ steps.check_pr_labels_major.outputs.passed }} == true
+      run: |
+        sed -i "3 s/.*/\t\"version\":\"${{ env.PLUGIN_VERSION }}\",/" package.json
+        cat package.json
                      
     - name: Commit and push changes
       if: ${{ steps.check_pr_labels_major.outputs.passed }} == true
