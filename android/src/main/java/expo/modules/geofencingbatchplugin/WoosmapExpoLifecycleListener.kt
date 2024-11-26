@@ -18,7 +18,7 @@ class WoosmapExpoLifecycleListener : ApplicationLifecycleListener {
 
     override fun onCreate(application: Application) {
         super.onCreate(application)
-        startBatch(application)
+        //startBatch(application)
         registerBroadcastReceiver(application)
     }
 
