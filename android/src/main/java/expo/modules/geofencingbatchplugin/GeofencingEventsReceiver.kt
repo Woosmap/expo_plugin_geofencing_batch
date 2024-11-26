@@ -29,14 +29,10 @@ class GeofencingEventsReceiver : BroadcastReceiver() {
                 val regionData = JSONObject(intent.getStringExtra("regionLog") ?: "{}")
                 val attributes = BatchEventAttributes().apply {
                     put("id", regionData.getString("identifier"))
-                    put("event_name", regionData.getString("eventname"))
                     put("longitude", regionData.getDouble("longitude"))
                     put("latitude", regionData.getDouble("latitude"))
                     put("date", regionData.getLong("date"))
-                    put("did_enter", regionData.getBoolean("didenter"))
                     put("radius", regionData.getDouble("radius"))
-                    put("spent_time", regionData.getInt("spenttime"))
-                    put("from_position_detection", regionData.getBoolean("frompositiondetection"))
                 }
 
                 // Fetch the POI from the database
@@ -47,7 +43,6 @@ class GeofencingEventsReceiver : BroadcastReceiver() {
                     it.name?.let { name -> attributes.put("name", name) }
                     it.address?.let { address -> attributes.put("address", address) }
                     it.city?.let { city -> attributes.put("city", city) }
-                    it.contact?.let { contact -> attributes.put("contact", contact) }
                     it.countryCode?.let { countryCode -> attributes.put("country_code", countryCode) }
                     attributes.put("distance", it.distance)
                     it.types?.let { types -> attributes.put("types", types) }
