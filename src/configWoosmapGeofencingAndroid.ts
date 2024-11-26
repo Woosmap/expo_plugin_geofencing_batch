@@ -13,13 +13,6 @@ const withSDKAndroidManifest: ConfigPlugin<ConfigProps> = (config, props) => {
       config.modResults,
     );
 
-    //Don't need it.
-    AndroidConfig.Manifest.addMetaDataItemToMainApplication(
-      mainApplication,
-      "MY_CUSTOM_API_KEY",
-      props.apiKey,
-    );
-
     // Add location and BLE permissions to the <manifest> tag
     const permissions = [
       "android.permission.ACCESS_COARSE_LOCATION",
