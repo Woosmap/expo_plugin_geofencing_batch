@@ -5,7 +5,7 @@
   ],
   "apple": {
     "modules": [
-      "WoosmapExpoPluginGeofencingBatchModule"
+      "ExpoPluginGeofencingBatchModule"
     ],
     "appDelegateSubscribers": ["WoosmapGeofencingAppDelegate"]
   },
