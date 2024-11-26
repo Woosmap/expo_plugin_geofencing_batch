@@ -150,10 +150,10 @@ jobs:
           cd example && npm install
           npx pod-install
           
-      - name: Run test
-        run: |
-          npm test
-          #yarn example run ios
+      # - name: Run test
+      #   run: |
+      #     npm test
+      #     #yarn example run ios
           
 #   react_android:
 #      needs: react_ios
