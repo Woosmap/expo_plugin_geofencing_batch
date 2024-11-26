@@ -44,7 +44,8 @@ jobs:
           npm run prepack
           npm publish --access public
         env:
-          NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
+          NODE_AUTH_TOKEN: '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'
+          # ${{secrets.NPM_TOKEN}}
           
       - name: Create a GitHub release
         uses: ncipollo/release-action@v1
