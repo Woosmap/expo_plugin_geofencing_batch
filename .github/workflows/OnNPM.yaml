@@ -1,0 +1,98 @@
+name: Publish Map JS SDK - NPM Repo
+'on':
+  push:
+    branches:
+      - master
+    paths:
+      - package.json
+  workflow_dispatch: null
+jobs:
+  package_publish:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Check out Git repository
+        uses: actions/checkout@v4
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+          registry-url: 'https://registry.npmjs.org/'
+      - name: Capture plugin version
+        run: |
+          _pluginVersion=$(node -p "require('./package.json').version")
+          echo "PLUGIN_VERSION=${_pluginVersion}" >> $GITHUB_ENV
+          echo "new version : ${_pluginVersion}"
+
+      - name: Update change log
+        run: |
+            touch update.md
+            echo "## ${{ env.PLUGIN_VERSION }}" > update.md
+            cat  whatsnew.md >> update.md
+            echo "" >> update.md
+            cat  CHANGELOG.md >> update.md
+            rm CHANGELOG.md
+            mv update.md CHANGELOG.md
+          
+      - name: Collect dependencies
+        run: |
+          npm install
+          
+      - name: Publish
+        run: |
+          npm run prepack
+          npm publish --access public
+        env:
+          NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
+          
+      - name: Create a GitHub release
+        uses: ncipollo/release-action@v1
+        with:
+          tag: ${{ env.PLUGIN_VERSION }}
+          name: Release ${{ env.PLUGIN_VERSION }}
+
+  update_changelog:
+    needs: package_publish
+    if: github.triggering_actor != 'wgsadmin'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Check out Git repository
+        uses: actions/checkout@v2
+        with:
+          token: ${{ secrets.HELPER_TOKEN }}
+          
+      - name: 'Use Node.js'
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+          registry-url: https://registry.npmjs.org/
+        
+      - name: Capture plugin version
+        run: |
+          _pluginVersion=$(node -p "require('./package.json').version")
+          echo "PLUGIN_VERSION=${_pluginVersion}" >> $GITHUB_ENV
+          echo "new version : ${_pluginVersion}"
+            
+      - name: Update change log
+        run: |
+            touch update.md
+            echo "## ${{ env.PLUGIN_VERSION }}" > update.md
+            cat  whatsnew.md >> update.md
+            echo "" >> update.md
+            cat  CHANGELOG.md >> update.md
+            rm CHANGELOG.md
+            mv update.md CHANGELOG.md
+            
+      - name: Config git
+        run: |
+          git config user.name "wgsadmin"
+          git config user.email "operations@webgeoservices.com"
+          
+      - name: Push CHANGELOG.md
+        run: |
+          git add CHANGELOG.md
+          git commit -m "Update CHANGELOG.md after Release"
+          git push
