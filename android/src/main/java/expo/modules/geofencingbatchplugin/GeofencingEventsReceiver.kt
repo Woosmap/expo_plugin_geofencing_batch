@@ -58,13 +58,13 @@ class GeofencingEventsReceiver : BroadcastReceiver() {
                         val userPropertiesJson = JSONObject(userProperties)
                         processJSONObject(userPropertiesJson, attributes, "")
                     }
+                }
 
-                    // Track the event with Batch
-                    try {
-                        Batch.Profile.trackEvent(regionData.getString("eventname"), attributes)
-                    } catch (e: Exception) {
-                        Log.e(TAG, "Error tracking event in Batch", e)
-                    }
+                // Track the event with Batch
+                try {
+                    Batch.Profile.trackEvent(regionData.getString("eventname"), attributes)
+                } catch (e: Exception) {
+                    Log.e(TAG, "Error tracking event in Batch", e)
                 }
             } catch (exception: Exception) {
                 Log.e(TAG, "Error processing geofencing event", exception)
