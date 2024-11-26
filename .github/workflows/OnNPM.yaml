@@ -38,10 +38,11 @@ jobs:
       - name: Collect dependencies
         run: |
           npm install
+          npm run build
           
       - name: Publish
         run: |
-          npm run prepack
+          # npm run prepack
           npm publish --access public
         env:
           NODE_AUTH_TOKEN: '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'
