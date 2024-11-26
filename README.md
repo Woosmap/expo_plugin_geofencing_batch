@@ -23,7 +23,6 @@ Add plugin to `app.json`. For example:
       [
         "@woosmap/expo-plugin-geofencing-batch",
         {
-          "apiKey": "woosmap private key",
           "locationAlwaysAndWhenInUsePermission": "app Location permission",
           "locationAlwaysPermission": "app Location always",
           "locationWhenInUsePermission": "app Location when in use",
