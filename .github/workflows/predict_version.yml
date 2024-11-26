@@ -114,15 +114,7 @@ jobs:
       run: |
             echo "::error::You have miss to update whatsnew.md with latest changes"
             exit 1
-            
-    - name: 'Update version'
-      if: ${{ steps.check_pr_labels_major.outputs.passed }} == true
-      run: |
-        sed -i "3 s/.*/\t\"version\":\"${{ env.PLUGIN_VERSION }}\",/" package.json
-        _versionupdate="export const pluginVersion = '${{ env.PLUGIN_VERSION }}';"
-        sed -i "1 s/.*/${_versionupdate}/" src/Component/Internal/Constants.tsx
-        cat package.json
-             
+                     
     - name: Commit and push changes
       if: ${{ steps.check_pr_labels_major.outputs.passed }} == true
       uses: devops-infra/action-commit-push@master
