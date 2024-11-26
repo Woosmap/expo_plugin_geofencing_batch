@@ -1,4 +1,4 @@
-name: Publish Map JS SDK - NPM Repo
+name: Publish Expo plugin - NPM Repo
 'on':
   push:
     branches:
