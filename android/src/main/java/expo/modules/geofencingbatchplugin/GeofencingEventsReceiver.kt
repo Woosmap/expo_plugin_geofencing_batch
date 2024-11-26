@@ -28,7 +28,7 @@ class GeofencingEventsReceiver : BroadcastReceiver() {
                 Log.d(TAG, "executorService.execute")
                 val regionData = JSONObject(intent.getStringExtra("regionLog") ?: "{}")
                 val attributes = BatchEventAttributes().apply {
-                    put("identifier", regionData.getString("identifier"))
+                    put("id", regionData.getString("identifier"))
                     put("event_name", regionData.getString("eventname"))
                     put("longitude", regionData.getDouble("longitude"))
                     put("latitude", regionData.getDouble("latitude"))
@@ -85,11 +85,11 @@ class GeofencingEventsReceiver : BroadcastReceiver() {
 
             when (value) {
                 is JSONObject -> processJSONObject(value, attributes, formattedKey)
-                is String -> attributes.put(formattedKey, value)
-                is Int -> attributes.put(formattedKey, value)
-                is Double -> attributes.put(formattedKey, value)
-                is Long -> attributes.put(formattedKey, value)
-                is Boolean -> attributes.put(formattedKey, value)
+                is String -> attributes.put("user_properties.$formattedKey", value)
+                is Int -> attributes.put("user_properties.$formattedKey", value)
+                is Double -> attributes.put("user_properties.$formattedKey", value)
+                is Long -> attributes.put("user_properties.$formattedKey", value)
+                is Boolean -> attributes.put("user_properties.$formattedKey", value)
             }
         }
     }
