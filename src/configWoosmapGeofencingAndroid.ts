@@ -11,12 +11,6 @@ const withSDKAndroidManifest: ConfigPlugin<ConfigProps> = (config, props) => {
     const mainApplication = AndroidConfig.Manifest.getMainApplicationOrThrow(
       config.modResults,
     );
-
-    AndroidConfig.Manifest.addMetaDataItemToMainApplication(
-      mainApplication,
-      "MY_CUSTOM_API_KEY",
-      props.apiKey,
-    );
     return config;
   });
 

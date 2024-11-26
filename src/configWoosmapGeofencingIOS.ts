@@ -10,16 +10,12 @@ const withSDKInfoPlist: ConfigPlugin<ConfigProps> = (config, props) => {
   return withInfoPlist(config, (config) => {
     delete config.modResults.woosmap;
     const {
-      apiKey,
       locationAlwaysAndWhenInUsePermission,
       locationAlwaysPermission,
       locationWhenInUsePermission,
     } = props;
 
-    if (apiKey) {
-      config.modResults.woosmap = { apiKey };
-    }
-
+  
     //Permission
     if (!Array.isArray(config.modResults.UIBackgroundModes)) {
       config.modResults.UIBackgroundModes = [];
