@@ -9,10 +9,11 @@
     "recreate": "npx expo prebuild --clean"
   },
   "dependencies": {
+    "@batch.com/react-native-plugin": "^9.0.2",
+    "@woosmap/react-native-plugin-geofencing": "^0.5.1",
     "expo": "~51.0.28",
     "react": "18.2.0",
-    "react-native": "0.74.5",
-    "@woosmap/react-native-plugin-geofencing": "^0.5.1"
+    "react-native": "0.74.5"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",

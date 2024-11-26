@@ -8,7 +8,7 @@ const withWoosmapGeofencingPlugin: ConfigPlugin<ConfigProps> = (
   config,
   _props,
 ) => {
-  const props = _props || { apiKey: "" };
+  const props = _props || { apiKey: ""};
   //console.log("my custom plugin");
   config = withAndroidSdk(config, props);
   config = withIOSSdk(config, props);

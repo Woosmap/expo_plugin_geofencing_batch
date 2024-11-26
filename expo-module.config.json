@@ -11,7 +11,10 @@
   },
   "android": {
     "modules": [
-      "expo.modules.woosmapexpoplugingeofencingbatch.WoosmapExpoPluginGeofencingBatchModule"
+      "expo.modules.geofencingbatchplugin.WoosmapExpoPluginGeofencingBatchModule"
+    ],
+    "packages":[
+      "expo.modules.geofencingbatchplugin.WoosmapExpoPackage"
     ]
   }
 }
