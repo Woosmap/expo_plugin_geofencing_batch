@@ -31,44 +31,50 @@ class GeofencingEventsReceiver: NSObject {
                 collectedEvent["latitude"] = POIregion.latitude
                 collectedEvent["longitude"] = POIregion.longitude
                 collectedEvent["radius"] = POIregion.radius
-                
+                if POIregion.identifier == "3009_139001" {
+                    print("poi: \(POIregion.identifier)")
+                }
+                else{
+                    print("fetch poi: \(POIregion.identifier)")
+                }
                 
                 if let POI = POIs.getPOIbyIdStore(idstore: POIregion.identifier) as POI? {
+                    
                     collectedEvent["name"] = POI.name ?? "-"
                     
-                    let idstore = POI.idstore ?? "-"
+                    let idstore = POI.idstore ?? ""
                     if(idstore.trimmingCharacters(in: .whitespacesAndNewlines) != ""){
                         collectedEvent["id_store"] = idstore
                     }
                     
-                    let city = POI.city ?? "-"
+                    let city = POI.city ?? ""
                     if(city.trimmingCharacters(in: .whitespacesAndNewlines) != ""){
                         collectedEvent["city"] = city
                     }
                     
-                    let zipCode = POI.zipCode ?? "-"
+                    let zipCode = POI.zipCode ?? ""
                     if(zipCode.trimmingCharacters(in: .whitespacesAndNewlines) != ""){
                         collectedEvent["zip_code"] = zipCode
                     }
                     
                     collectedEvent["distance"] = POI.distance
                     
-                    let countryCode = POI.countryCode ?? "-"
+                    let countryCode = POI.countryCode ?? ""
                     if(countryCode.trimmingCharacters(in: .whitespacesAndNewlines) != ""){
                         collectedEvent["country_code"] = countryCode
                     }
                     
-                    let address = POI.address ?? "-"
+                    let address = POI.address ?? ""
                     if(address.trimmingCharacters(in: .whitespacesAndNewlines) != ""){
                         collectedEvent["address"] = address
                     }
                     
-                    let tag : String = POI.tags ?? "-"
+                    let tag : String = POI.tags ?? ""
                     if(tag.trimmingCharacters(in: .whitespacesAndNewlines) != ""){
                         collectedEvent["tags"] = tag
                     }
                     
-                    let types : String = POI.types ?? "-"
+                    let types : String = POI.types ?? ""
                     if(types.trimmingCharacters(in: .whitespacesAndNewlines) != ""){
                         collectedEvent["types"] = types
                     }
@@ -89,6 +95,12 @@ class GeofencingEventsReceiver: NSObject {
                     }
                     else if let val = eventValue as? Int {
                         eventAttributes.put(val, forKey: eventKey)
+                    }
+                    else if let val = eventValue as? Int64 {
+                        eventAttributes.put(Int(val), forKey: eventKey)
+                    }
+                    else if let val = eventValue as? Int32 {
+                        eventAttributes.put(Int(val), forKey: eventKey)
                     }
                     else if let val = eventValue as? Date {
                         eventAttributes.put(val, forKey: eventKey)
