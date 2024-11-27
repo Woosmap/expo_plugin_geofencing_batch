@@ -39,7 +39,7 @@ class GeofencingEventsReceiver: NSObject {
                     
                     let idstore = POI.idstore ?? "-"
                     if(idstore.trimmingCharacters(in: .whitespacesAndNewlines) != ""){
-                        collectedEvent["idStore"] = idstore
+                        collectedEvent["id_store"] = idstore
                     }
                     
                     let city = POI.city ?? "-"
@@ -49,7 +49,7 @@ class GeofencingEventsReceiver: NSObject {
                     
                     let zipCode = POI.zipCode ?? "-"
                     if(zipCode.trimmingCharacters(in: .whitespacesAndNewlines) != ""){
-                        collectedEvent["zipCode"] = zipCode
+                        collectedEvent["zip_code"] = zipCode
                     }
                     
                     collectedEvent["distance"] = POI.distance
