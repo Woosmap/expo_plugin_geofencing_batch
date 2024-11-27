@@ -33,7 +33,7 @@ class GeofencingEventsReceiver: NSObject {
                 collectedEvent["radius"] = POIregion.radius
                 
                 
-                if let POI = POIs.getPOIbyIdStore(idstore: POIregion.identifier) as POI? {                    
+                if let POI = POIs.getPOIbyIdStore(idstore: POIregion.identifier) as POI? {
                     collectedEvent["name"] = POI.name ?? "-"
                     
                     let idstore = POI.idstore ?? "-"
@@ -75,12 +75,9 @@ class GeofencingEventsReceiver: NSObject {
                     
                     POI.user_properties.forEach {
                         if collectedEvent.keys.count <= 25 {
-                            let keyValue = $0.value as? String ?? "-"
-                            if(keyValue.trimmingCharacters(in: .whitespacesAndNewlines) != ""){
-                                var attributeKey: String = $0.key.camelCaseToKey().lowercased()
-                                attributeKey = String(attributeKey.prefix(30))
-                                collectedEvent[attributeKey] = keyValue
-                            }
+                            var attributeKey: String = $0.key.camelCaseToKey().lowercased()
+                            attributeKey = String(attributeKey.prefix(30))
+                            collectedEvent[attributeKey] = $0.value
                         }
                     }
                 }
@@ -93,9 +90,6 @@ class GeofencingEventsReceiver: NSObject {
                     else if let val = eventValue as? Int {
                         eventAttributes.put(val, forKey: eventKey)
                     }
-                    else if let val = eventValue as? Float {
-                        eventAttributes.put(val, forKey: eventKey)
-                    }
                     else if let val = eventValue as? Date {
                         eventAttributes.put(val, forKey: eventKey)
                     }
@@ -103,10 +97,12 @@ class GeofencingEventsReceiver: NSObject {
                         eventAttributes.put(val, forKey: eventKey)
                     }
                     else if let val = eventValue as? String {
-                        eventAttributes.put(String(val.prefix(200)), forKey: eventKey)
+                        if(val.trimmingCharacters(in: .whitespacesAndNewlines) != ""){
+                            eventAttributes.put(String(val.prefix(200)), forKey: eventKey)
+                        }
                     }
                 }
-            
+                
                 BatchProfile.trackEvent(name: batchEventName,attributes:eventAttributes)
             }
             
@@ -124,7 +120,7 @@ private extension String {
         return unicodeScalars.dropFirst().reduce(String(prefix(1))) {
             return CharacterSet.uppercaseLetters.contains($1)
             ? $0 + "_" + String($1).lowercased()
-                : $0 + String($1)
+            : $0 + String($1)
         }
     }
 }
