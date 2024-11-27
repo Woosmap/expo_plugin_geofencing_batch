@@ -31,17 +31,10 @@ class GeofencingEventsReceiver: NSObject {
                 collectedEvent["latitude"] = POIregion.latitude
                 collectedEvent["longitude"] = POIregion.longitude
                 collectedEvent["radius"] = POIregion.radius
-                if POIregion.identifier == "3009_139001" {
-                    print("poi: \(POIregion.identifier)")
-                }
-                else{
-                    print("fetch poi: \(POIregion.identifier)")
-                }
                 
                 if let POI = POIs.getPOIbyIdStore(idstore: POIregion.identifier) as POI? {
                     
                     collectedEvent["name"] = POI.name ?? "-"
-                    
                     let idstore = POI.idstore ?? ""
                     if(idstore.trimmingCharacters(in: .whitespacesAndNewlines) != ""){
                         collectedEvent["id_store"] = idstore
@@ -56,7 +49,7 @@ class GeofencingEventsReceiver: NSObject {
                     if(zipCode.trimmingCharacters(in: .whitespacesAndNewlines) != ""){
                         collectedEvent["zip_code"] = zipCode
                     }
-                    
+            
                     collectedEvent["distance"] = POI.distance
                     
                     let countryCode = POI.countryCode ?? ""
