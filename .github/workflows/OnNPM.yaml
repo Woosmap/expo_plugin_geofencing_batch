@@ -62,6 +62,8 @@ jobs:
     steps:
       - name: Check out Git repository
         uses: actions/checkout@v2
+        with:
+          token: ${{ secrets.MY_HELPER_TOKEN }}
           
       - name: 'Use Node.js'
         uses: actions/setup-node@v4
