@@ -1,1 +1,1 @@
-* Enhancement: bug fixes user properties
+* Enhancement: bug fixes
