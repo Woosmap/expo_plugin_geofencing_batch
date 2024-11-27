@@ -35,15 +35,49 @@ class GeofencingEventsReceiver: NSObject {
                 
                 if let POI = POIs.getPOIbyIdStore(idstore: POIregion.identifier) as POI? {
                     eventAttributes.put(POI.name ?? "-", forKey: "name")
-                    eventAttributes.put(POI.idstore ?? "-", forKey: "idStore")
-                    eventAttributes.put(POI.city ?? "-", forKey: "city")
-                    eventAttributes.put(POI.zipCode ?? "-", forKey: "zipCode")
+                    let idstore = POI.idstore ?? "-"
+                    if(idstore.trimmingCharacters(in: .whitespacesAndNewlines) != ""){
+                        eventAttributes.put(idstore, forKey: "idStore")
+                    }
+                    
+                    let city = POI.city ?? "-"
+                    if(city.trimmingCharacters(in: .whitespacesAndNewlines) != ""){
+                        eventAttributes.put(city, forKey: "city")
+                    }
+                    
+                    let zipCode = POI.zipCode ?? "-"
+                    if(zipCode.trimmingCharacters(in: .whitespacesAndNewlines) != ""){
+                        eventAttributes.put(zipCode, forKey: "zipCode")
+                    }
+                    
                     eventAttributes.put(POI.distance, forKey: "distance")
-                    eventAttributes.put(POI.countryCode ?? "-", forKey: "country_code")
-                    eventAttributes.put(POI.address ?? "-", forKey: "address")
-                    eventAttributes.put(POI.tags ?? "-", forKey: "tags")
-                    eventAttributes.put(POI.types ?? "-", forKey: "types")
-                    POI.user_properties.forEach { eventAttributes.put("user_properties.\($0.value as? String ?? "-")", forKey: $0.key) }
+                    
+                    let countryCode = POI.countryCode ?? "-"
+                    if(countryCode.trimmingCharacters(in: .whitespacesAndNewlines) != ""){
+                        eventAttributes.put(countryCode, forKey: "country_code")
+                    }
+                    
+                    let address = POI.address ?? "-"
+                    if(address.trimmingCharacters(in: .whitespacesAndNewlines) != ""){
+                        eventAttributes.put(address, forKey: "address")
+                    }
+                    
+                    let tag : String = POI.tags ?? "-"
+                    if(tag.trimmingCharacters(in: .whitespacesAndNewlines) != ""){
+                        eventAttributes.put(tag, forKey: "tags")
+                    }
+                    
+                    let types : String = POI.types ?? "-"
+                    if(types.trimmingCharacters(in: .whitespacesAndNewlines) != ""){
+                        eventAttributes.put(types, forKey: "types")
+                    }
+                    
+                    POI.user_properties.forEach {
+                        let keyValue = $0.value as? String ?? "-"
+                        if(keyValue.trimmingCharacters(in: .whitespacesAndNewlines) != ""){
+                            eventAttributes.put(keyValue, forKey: "user_properties.\($0.key)")
+                        }
+                    }
                 }
             
                 BatchProfile.trackEvent(name: batchEventName,attributes:eventAttributes)
