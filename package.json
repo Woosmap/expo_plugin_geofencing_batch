@@ -9,7 +9,8 @@
     "react-native",
     "expo",
     "@woosmap/expo-plugin-geofencing-batch",
-    "ExpoPluginGeofencingBatch"
+    "ExpoPluginGeofencingBatch",
+    "Woosmap"	
   ],
   "repository": {
     "type": "git",
