@@ -92,7 +92,16 @@ class GeofencingEventsReceiver : BroadcastReceiver() {
             // Process value and recurse for nested JSONObjects
             when (value) {
                 is JSONObject -> processJSONObject(value, attributes, formattedKey)
-                is String -> attributes.put(formattedKey, value)
+                is String -> {
+                    // Truncate strings longer than 200 characters
+                    val truncatedValue = if (value.length > 200) {
+                        Log.w(TAG, "Truncating attribute $formattedKey: string value exceeds 200 characters")
+                        value.take(200)
+                    } else {
+                        value
+                    }
+                    attributes.put(formattedKey, truncatedValue)
+                }
                 is Int -> attributes.put(formattedKey, value)
                 is Double -> attributes.put(formattedKey, value)
                 is Long -> attributes.put(formattedKey, value)
