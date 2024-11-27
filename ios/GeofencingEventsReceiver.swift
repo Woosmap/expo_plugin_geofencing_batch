@@ -33,8 +33,7 @@ class GeofencingEventsReceiver: NSObject {
                 collectedEvent["radius"] = POIregion.radius
                 
                 
-                if let POI = POIs.getPOIbyIdStore(idstore: POIregion.identifier) as POI? {
-                    
+                if let POI = POIs.getPOIbyIdStore(idstore: POIregion.identifier) as POI? {                    
                     collectedEvent["name"] = POI.name ?? "-"
                     
                     let idstore = POI.idstore ?? "-"

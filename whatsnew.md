@@ -1,1 +1,1 @@
-* enhancement: Expo integration for Woosmap geofencing and batch
+* publish: Expo integration for Woosmap geofencing and batch
