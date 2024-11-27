@@ -90,6 +90,9 @@ class GeofencingEventsReceiver: NSObject {
                     if let val = eventValue as? Double {
                         eventAttributes.put(val, forKey: eventKey)
                     }
+                    else if let val = eventValue as? Int {
+                        eventAttributes.put(val, forKey: eventKey)
+                    }
                     else if let val = eventValue as? Date {
                         eventAttributes.put(val, forKey: eventKey)
                     }
