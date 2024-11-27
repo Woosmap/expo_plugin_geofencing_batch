@@ -84,20 +84,11 @@ jobs:
             cat  CHANGELOG.md >> update.md
             rm CHANGELOG.md
             mv update.md CHANGELOG.md
-            
-      - name: Config git
-        run: |
-          git config user.name "wgsadmin"
-          git config --global user.email 'operations@webgeoservices.com'
-          
+                      
       - name: Push CHANGELOG.md
         run: |
           git config user.name "wgsadmin"
           git config user.email "operations@webgeoservices.com"
-          git config --global user.name 'wgsadmin'
-          git config --global user.email 'operations@webgeoservices.com'
           git add CHANGELOG.md
           git commit -m "Update CHANGELOG.md after Release"
           git push
-        env:
-          GH_TOKEN: ${{ secrets.PUBLIC_GITHUB_TOKEN }}
