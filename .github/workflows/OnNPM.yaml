@@ -88,12 +88,14 @@ jobs:
       - name: Config git
         run: |
           git config user.name "wgsadmin"
-          git config user.email "operations@woosmap.com"
+          git config --global user.email 'operations@webgeoservices.com'
           
       - name: Push CHANGELOG.md
         run: |
           git config user.name "wgsadmin"
-          git config user.email "operations@woosmap.com"
+          git config user.email "operations@webgeoservices.com"
+          git config --global user.name 'wgsadmin'
+          git config --global user.email 'operations@webgeoservices.com'
           git add CHANGELOG.md
           git commit -m "Update CHANGELOG.md after Release"
           git push
