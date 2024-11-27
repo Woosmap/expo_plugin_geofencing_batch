@@ -10,7 +10,7 @@
     "expo",
     "@woosmap/expo-plugin-geofencing-batch",
     "ExpoPluginGeofencingBatch",
-    "Woosmap a"	
+    "Woosmap"	
   ],
   "repository": {
     "type": "git",
