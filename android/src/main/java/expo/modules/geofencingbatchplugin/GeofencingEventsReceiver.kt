@@ -76,15 +76,27 @@ class GeofencingEventsReceiver : BroadcastReceiver() {
             val key = keys.next()
             val value = jsonObject[key]
             val fullKey = if (parentKey.isEmpty()) key else "${parentKey}_$key"
-            val formattedKey = fullKey.replace(Regex("([A-Z])"), "_$1").lowercase()
+            var formattedKey = fullKey.replace(Regex("([A-Z])"), "_$1").lowercase()
 
+            // Skip attributes with empty or whitespace-only values
+            if (value is String && value.isBlank()) continue
+
+            // Validate key: only allow a-zA-Z0-9_ and max length 30
+            if (!formattedKey.matches(Regex("^[a-zA-Z0-9_]{1,30}$"))) {
+                formattedKey = formattedKey.replace(Regex("[^a-zA-Z0-9_]"), "_")
+                if (formattedKey.length > 30) {
+                    formattedKey = formattedKey.take(30)
+                }
+            }
+
+            // Process value and recurse for nested JSONObjects
             when (value) {
                 is JSONObject -> processJSONObject(value, attributes, formattedKey)
-                is String -> attributes.put("user_properties.$formattedKey", value)
-                is Int -> attributes.put("user_properties.$formattedKey", value)
-                is Double -> attributes.put("user_properties.$formattedKey", value)
-                is Long -> attributes.put("user_properties.$formattedKey", value)
-                is Boolean -> attributes.put("user_properties.$formattedKey", value)
+                is String -> attributes.put(formattedKey, value)
+                is Int -> attributes.put(formattedKey, value)
+                is Double -> attributes.put(formattedKey, value)
+                is Long -> attributes.put(formattedKey, value)
+                is Boolean -> attributes.put(formattedKey, value)
             }
         }
     }
