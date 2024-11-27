@@ -40,14 +40,14 @@ class GeofencingEventsReceiver : BroadcastReceiver() {
                     .getPOIbyStoreId(regionData.getString("identifier"))
                 poi?.let {
                     it.idStore?.let { idStore -> attributes.put("id_store", idStore) }
-                    it.name?.let { name -> attributes.put("name", name) }
-                    it.address?.let { address -> attributes.put("address", address) }
-                    it.city?.let { city -> attributes.put("city", city) }
-                    it.countryCode?.let { countryCode -> attributes.put("country_code", countryCode) }
+                    it.name?.takeIf { name -> name.isNotBlank() && name.length <= 200 }?.let { name -> attributes.put("name", name) }
+                    it.address?.takeIf { address -> address.isNotBlank() && address.length <= 200 }?.let { address -> attributes.put("address", address) }
+                    it.city?.takeIf { city -> city.isNotBlank() && city.length <= 200 }?.let { city -> attributes.put("city", city) }
+                    it.countryCode?.takeIf { countryCode -> countryCode.isNotBlank() && countryCode.length <= 200 }?.let { countryCode -> attributes.put("country_code", countryCode) }
                     attributes.put("distance", it.distance)
-                    it.types?.let { types -> attributes.put("types", types) }
-                    it.tags?.let { tags -> attributes.put("tags", tags) }
-                    it.zipCode?.let { zipCode -> attributes.put("zip_code", zipCode) }
+                    it.types?.takeIf { types -> types.isNotBlank() && types.length <= 200 }?.let { types -> attributes.put("types", types) }
+                    it.tags?.takeIf { tags -> tags.isNotBlank() && tags.length <= 200 }?.let { tags -> attributes.put("tags", tags) }
+                    it.zipCode?.takeIf { zipCode -> zipCode.isNotBlank() && zipCode.length <= 200 }?.let { zipCode -> attributes.put("zip_code", zipCode) }
 
                     it.userProperties?.let { userProperties ->
                         val userPropertiesJson = JSONObject(userProperties)
