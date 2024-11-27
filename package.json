@@ -1,6 +1,6 @@
 {
   "name": "@woosmap/expo-plugin-geofencing-batch",
-	"version":"0.2.1",
+	"version":"0.2.2",
   "description": "Woosmap geofencing and batch integration",
   "main": "build/index.js",
   "types": "build/index.d.ts",
