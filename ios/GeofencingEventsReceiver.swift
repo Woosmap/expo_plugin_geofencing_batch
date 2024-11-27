@@ -24,59 +24,80 @@ class GeofencingEventsReceiver: NSObject {
             // check first if the POIregion.origin is equal to "POI"
             if POIregion.origin == "POI"
             {
-                let eventAttributes:BatchEventAttributes = BatchEventAttributes()
+                var collectedEvent: [String: Any] = [:]
                 
-                eventAttributes.put(POIregion.date, forKey: "date")
-                eventAttributes.put(POIregion.identifier, forKey: "id")
-                eventAttributes.put(POIregion.latitude, forKey: "latitude")
-                eventAttributes.put(POIregion.longitude, forKey: "longitude")
-                eventAttributes.put(POIregion.radius, forKey: "radius")
+                collectedEvent["date"] = POIregion.date
+                collectedEvent["id"] = POIregion.identifier
+                collectedEvent["latitude"] = POIregion.latitude
+                collectedEvent["longitude"] = POIregion.longitude
+                collectedEvent["radius"] = POIregion.radius
                 
                 
-                if let POI = POIs.getPOIbyIdStore(idstore: POIregion.identifier) as POI? {
-                    eventAttributes.put(POI.name ?? "-", forKey: "name")
+                if let POI = POIs.getPOIbyIdStore(idstore: POIregion.identifier) as POI? {                    
+                    collectedEvent["name"] = POI.name ?? "-"
+                    
                     let idstore = POI.idstore ?? "-"
                     if(idstore.trimmingCharacters(in: .whitespacesAndNewlines) != ""){
-                        eventAttributes.put(idstore, forKey: "idStore")
+                        collectedEvent["id_store"] = idstore
                     }
                     
                     let city = POI.city ?? "-"
                     if(city.trimmingCharacters(in: .whitespacesAndNewlines) != ""){
-                        eventAttributes.put(city, forKey: "city")
+                        collectedEvent["city"] = city
                     }
                     
                     let zipCode = POI.zipCode ?? "-"
                     if(zipCode.trimmingCharacters(in: .whitespacesAndNewlines) != ""){
-                        eventAttributes.put(zipCode, forKey: "zipCode")
+                        collectedEvent["zip_code"] = zipCode
                     }
                     
-                    eventAttributes.put(POI.distance, forKey: "distance")
+                    collectedEvent["distance"] = POI.distance
                     
                     let countryCode = POI.countryCode ?? "-"
                     if(countryCode.trimmingCharacters(in: .whitespacesAndNewlines) != ""){
-                        eventAttributes.put(countryCode, forKey: "country_code")
+                        collectedEvent["country_code"] = countryCode
                     }
                     
                     let address = POI.address ?? "-"
                     if(address.trimmingCharacters(in: .whitespacesAndNewlines) != ""){
-                        eventAttributes.put(address, forKey: "address")
+                        collectedEvent["address"] = address
                     }
                     
                     let tag : String = POI.tags ?? "-"
                     if(tag.trimmingCharacters(in: .whitespacesAndNewlines) != ""){
-                        eventAttributes.put(tag, forKey: "tags")
+                        collectedEvent["tags"] = tag
                     }
                     
                     let types : String = POI.types ?? "-"
                     if(types.trimmingCharacters(in: .whitespacesAndNewlines) != ""){
-                        eventAttributes.put(types, forKey: "types")
+                        collectedEvent["types"] = types
                     }
                     
                     POI.user_properties.forEach {
-                        let keyValue = $0.value as? String ?? "-"
-                        if(keyValue.trimmingCharacters(in: .whitespacesAndNewlines) != ""){
-                            eventAttributes.put(keyValue, forKey: "user_properties.\($0.key)")
+                        if collectedEvent.keys.count <= 25 {
+                            let keyValue = $0.value as? String ?? "-"
+                            if(keyValue.trimmingCharacters(in: .whitespacesAndNewlines) != ""){
+                                var attributeKey: String = $0.key.camelCaseToKey().lowercased()
+                                attributeKey = String(attributeKey.prefix(30))
+                                collectedEvent[attributeKey] = keyValue
+                            }
                         }
+                    }
+                }
+                // Adding New Event
+                let eventAttributes:BatchEventAttributes = BatchEventAttributes()
+                for (eventKey, eventValue) in collectedEvent {
+                    if let val = eventValue as? Double {
+                        eventAttributes.put(val, forKey: eventKey)
+                    }
+                    else if let val = eventValue as? Date {
+                        eventAttributes.put(val, forKey: eventKey)
+                    }
+                    else if let val = eventValue as? Bool {
+                        eventAttributes.put(val, forKey: eventKey)
+                    }
+                    else if let val = eventValue as? String {
+                        eventAttributes.put(String(val.prefix(200)), forKey: eventKey)
                     }
                 }
             
@@ -90,4 +111,14 @@ class GeofencingEventsReceiver: NSObject {
         NotificationCenter.default.removeObserver(self, name: .didEventPOIRegion, object: nil)
     }
     
+}
+
+private extension String {
+    func camelCaseToKey() -> String {
+        return unicodeScalars.dropFirst().reduce(String(prefix(1))) {
+            return CharacterSet.uppercaseLetters.contains($1)
+            ? $0 + "_" + String($1).lowercased()
+                : $0 + String($1)
+        }
+    }
 }
