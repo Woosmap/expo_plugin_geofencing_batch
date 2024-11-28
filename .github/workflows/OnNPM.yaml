@@ -40,17 +40,17 @@ jobs:
           npm install
           npm run build
           
-      # - name: Publish
-      #   run: |
-      #     npm publish --access public
-      #   env:
-      #     NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
+      - name: Publish
+        run: |
+          npm publish --access public
+        env:
+          NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
           
-      # - name: Create a GitHub release
-      #   uses: ncipollo/release-action@v1
-      #   with:
-      #     tag: ${{ env.PLUGIN_VERSION }}
-      #     name: Release ${{ env.PLUGIN_VERSION }}
+      - name: Create a GitHub release
+        uses: ncipollo/release-action@v1
+        with:
+          tag: ${{ env.PLUGIN_VERSION }}
+          name: Release ${{ env.PLUGIN_VERSION }}
 
   update_changelog:
     needs: package_publish
