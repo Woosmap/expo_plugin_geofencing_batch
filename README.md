@@ -4,10 +4,6 @@ Woosmap geofencing batch integration
 
 @woosmap/expo-plugin-geofencing-batch is a [config plugin](https://docs.expo.dev/config-plugins/introduction/) to customize native build properties when using [npx expo prebuild](https://docs.expo.dev/workflow/prebuild/).
 
-# API documentation
-
-- [Documentation for the main branch](https://github.com/expo/expo/blob/main/docs/pages/versions/unversioned/sdk/geofencing-batch-plugin.md)
-- [Documentation for the latest stable release](https://docs.expo.dev/versions/latest/sdk/geofencing-batch-plugin/)
 
 ### Add the package to your npm dependencies
 
