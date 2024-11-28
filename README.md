@@ -26,7 +26,5 @@ Add plugin to `app.json`. For example:
       ]
     ]
 ```
-
-# Contributing
-
-Contributions are very welcome! Please refer to guidelines described in the [contributing guide]( https://github.com/expo/expo#contributing).
+### Woosmap Geofencing SDK - React-Native
+[SDK Ref](https://developers.woosmap.com/products/geofencing-sdk/react-native-plugin/guides/setup/)
