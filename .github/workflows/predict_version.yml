@@ -160,7 +160,7 @@ jobs:
         uses: actions/cache@v4
         with:
           path: Pods
-          key: ${{ runner.os }}-woosmap-pods-${{ hashFiles('**/Podfile.lock') }}
+          key: ${{ runner.os }}-woosmap-pods-${{ hashFiles('**/example/ios/Podfile.lock') }}
           restore-keys: |
             ${{ runner.os }}-woosmap-pods-
 
