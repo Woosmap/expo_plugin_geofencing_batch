@@ -168,6 +168,7 @@ jobs:
         run: |
           npm install
           npm install expo 
+          npm install -g expo-cli --force
           export USE_FRAMEWORKS=dynamic
           export NO_FLIPPER=1
           cd example && npm install && npx expo prebuild
