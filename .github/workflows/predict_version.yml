@@ -149,13 +149,13 @@ jobs:
           java-version: '17'
 
       - name: Cache NPM dependencies
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: ~/.npm
           key: ${{ runner.OS }}-woosmap-expo-cache-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
             ${{ runner.OS }}-woosmap-expo-cache-
-
+            
       - name: Cache POD dependencies
         uses: actions/cache@v4
         with:
