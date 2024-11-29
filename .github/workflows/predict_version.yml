@@ -167,6 +167,7 @@ jobs:
       - name: Build it
         run: |
           npm install
+          npm install expo
           npx expo prebuild
           export USE_FRAMEWORKS=dynamic
           export NO_FLIPPER=1
