@@ -167,11 +167,10 @@ jobs:
       - name: Build it
         run: |
           npm install
-          npm install expo
-          npx expo prebuild
+          npm install expo 
           export USE_FRAMEWORKS=dynamic
           export NO_FLIPPER=1
-          cd example && npm install
+          cd example && npm install && npx expo prebuild
           npx pod-install
           
       - name: Run test
