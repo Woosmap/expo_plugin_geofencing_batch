@@ -51,6 +51,7 @@ jobs:
         with:
           tag: ${{ env.PLUGIN_VERSION }}
           name: Release ${{ env.PLUGIN_VERSION }}
+          bodyFile: "whatsnew.md"
 
   update_changelog:
     needs: package_publish
