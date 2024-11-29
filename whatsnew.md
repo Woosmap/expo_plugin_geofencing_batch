@@ -1,1 +1,1 @@
-* Enhancement: bug fixes (Update)
+* Enhancement: bug fixes
