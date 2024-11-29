@@ -53,44 +53,44 @@ jobs:
           name: Release ${{ env.PLUGIN_VERSION }}
           bodyFile: "whatsnew.md"
 
-  update_changelog:
-    needs: package_publish
-    if: github.triggering_actor != 'wgsadmin'
-    runs-on: ubuntu-latest
-    permissions:
-      contents: write
-    steps:
-      - name: Check out Git repository
-        uses: actions/checkout@v2
-        with:
-          token: ${{ secrets.HELPER_TOKEN }}
+  # update_changelog:
+  #   needs: package_publish
+  #   if: github.triggering_actor != 'wgsadmin'
+  #   runs-on: ubuntu-latest
+  #   permissions:
+  #     contents: write
+  #   steps:
+  #     - name: Check out Git repository
+  #       uses: actions/checkout@v2
+  #       with:
+  #         token: ${{ secrets.HELPER_TOKEN }}
           
-      - name: 'Use Node.js'
-        uses: actions/setup-node@v4
-        with:
-          node-version: 18
-          registry-url: https://registry.npmjs.org/
+  #     - name: 'Use Node.js'
+  #       uses: actions/setup-node@v4
+  #       with:
+  #         node-version: 18
+  #         registry-url: https://registry.npmjs.org/
         
-      - name: Capture plugin version
-        run: |
-          _pluginVersion=$(node -p "require('./package.json').version")
-          echo "PLUGIN_VERSION=${_pluginVersion}" >> $GITHUB_ENV
-          echo "new version : ${_pluginVersion}"
+  #     - name: Capture plugin version
+  #       run: |
+  #         _pluginVersion=$(node -p "require('./package.json').version")
+  #         echo "PLUGIN_VERSION=${_pluginVersion}" >> $GITHUB_ENV
+  #         echo "new version : ${_pluginVersion}"
             
-      - name: Update change log
-        run: |
-            touch update.md
-            echo "## ${{ env.PLUGIN_VERSION }}" > update.md
-            cat  whatsnew.md >> update.md
-            echo "" >> update.md
-            cat  CHANGELOG.md >> update.md
-            rm CHANGELOG.md
-            mv update.md CHANGELOG.md
+  #     - name: Update change log
+  #       run: |
+  #           touch update.md
+  #           echo "## ${{ env.PLUGIN_VERSION }}" > update.md
+  #           cat  whatsnew.md >> update.md
+  #           echo "" >> update.md
+  #           cat  CHANGELOG.md >> update.md
+  #           rm CHANGELOG.md
+  #           mv update.md CHANGELOG.md
                       
-      - name: Push CHANGELOG.md
-        run: |
-          git config user.name "wgsadmin"
-          git config user.email "operations@webgeoservices.com"
-          git add CHANGELOG.md
-          git commit -m "Update CHANGELOG.md after Release"
-          git push
+  #     - name: Push CHANGELOG.md
+  #       run: |
+  #         git config user.name "wgsadmin"
+  #         git config user.email "operations@webgeoservices.com"
+  #         git add CHANGELOG.md
+  #         git commit -m "Update CHANGELOG.md after Release"
+  #         git push
