@@ -24,7 +24,9 @@
     },
     "plugins": [
       ["../app.plugin.js", { "apiKey": "woosmap private key", 
-                              "locationAlwaysAndWhenInUsePermission":"app Location new", "useAndroidBluetooth": false }],
+                              "locationAlwaysAndWhenInUsePermission":"app Location new", 
+                              "useAndroidBluetooth": false, 
+                              "useAndroidBackgroundLocation": false}],
       [
         "@batch.com/react-native-plugin",
         {
