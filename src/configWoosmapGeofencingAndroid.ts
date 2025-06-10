@@ -13,6 +13,11 @@ const withSDKAndroidManifest: ConfigPlugin<ConfigProps> = (config, props) => {
       config.modResults,
     );
 
+    const {
+      useAndroidBackgroundLocation,
+      useAndroidBluetooth,
+    } = props;
+
     // Add location and BLE permissions to the <manifest> tag
     const permissions = [
       "android.permission.ACCESS_COARSE_LOCATION",
@@ -22,7 +27,28 @@ const withSDKAndroidManifest: ConfigPlugin<ConfigProps> = (config, props) => {
       "android.permission.BLUETOOTH_ADMIN",
       "android.permission.BLUETOOTH_SCAN",
     ];
+    if(useAndroidBackgroundLocation == null){
+      if(useAndroidBackgroundLocation == true){
+        permissions.push("android.permission.ACCESS_BACKGROUND_LOCATION")
+      }
+    } else{
+        permissions.push("android.permission.ACCESS_BACKGROUND_LOCATION")
+    }
+    
 
+    if(useAndroidBluetooth == null){
+      if(useAndroidBluetooth == true){
+        permissions.push("android.permission.BLUETOOTH")
+        permissions.push("android.permission.BLUETOOTH_ADMIN")
+        permissions.push("android.permission.BLUETOOTH_SCAN")
+      }
+    } else{
+        permissions.push("android.permission.BLUETOOTH")
+        permissions.push("android.permission.BLUETOOTH_ADMIN")
+        permissions.push("android.permission.BLUETOOTH_SCAN")
+    }
+
+    
     // Ensure each permission is added only once
     permissions.forEach((permission) => {
       if (
