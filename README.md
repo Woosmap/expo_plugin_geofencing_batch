@@ -22,6 +22,8 @@ Add plugin to `app.json`. For example:
           "locationAlwaysAndWhenInUsePermission": "app Location permission",
           "locationAlwaysPermission": "app Location always",
           "locationWhenInUsePermission": "app Location when in use",
+          "ACCESS_BACKGROUND_LOCATION": true, //Default true
+          "android.permission.BLUETOOTH": false, //Default true
         }
       ]
     ]
