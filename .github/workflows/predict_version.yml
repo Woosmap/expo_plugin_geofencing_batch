@@ -99,11 +99,9 @@ jobs:
       with:
         ref: "${{ github.head_ref || github.ref_name }}"
 
-    - name: Update version in package.json and Constants.tsx
+    - name: Update version in package.json
       run: |
         sed -i "3 s/.*/\t\"version\": \"${PLUGIN_VERSION}\",/" package.json
-        _version_update="export const pluginVersion = '${PLUGIN_VERSION}';"
-        sed -i "1 s/.*/${_version_update}/" src/Component/Internal/Constants.tsx
 
     - name: Update CHANGELOG.md
       run: |
