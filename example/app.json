@@ -23,7 +23,10 @@
       "package": "expo.modules.geofencingbatchplugin.example"
     },
     "plugins": [
-      ["../app.plugin.js", { "apiKey": "woosmap private key", "locationAlwaysAndWhenInUsePermission":"app Location new" }],
+      ["../app.plugin.js", { "apiKey": "woosmap private key", 
+                              "locationAlwaysAndWhenInUsePermission":"app Location new", 
+                              "useAndroidBluetooth": false, 
+                              "useAndroidBackgroundLocation": false}],
       [
         "@batch.com/react-native-plugin",
         {

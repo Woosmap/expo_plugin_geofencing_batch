@@ -1,1 +1,1 @@
-* Enhancement: bug fixes
+* Enhancement: Fine-tune android permissions

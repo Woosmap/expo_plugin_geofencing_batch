@@ -10,125 +10,125 @@ on:
 permissions:
   contents: write
   pull-requests: write
-#   actions: write
   checks: write
-#   deployments: write
-#   id-token: write
-#   issues: write
-#   discussions: write
-#   packages: write
-#   pages: write
-#   repository-projects: write
-#   security-events: write
-#   statuses: write
 
 jobs:
   Versioning:
     runs-on: ubuntu-latest
-    steps:
-    - name: 'check tag labels'
-      id: check_pr_labels_major
-      uses: danielchabr/pr-labels-checker@v3.3
-      with:
-        githubToken: ${{ secrets.GITHUB_TOKEN }}
-        hasSome: "Major :star2:,Minor :sparkles:,Patch :bug:,Skip Version" 
+    if: |
+      contains(toJson(github.event.pull_request.labels.*.name), 'Major :star2:') ||
+      contains(toJson(github.event.pull_request.labels.*.name), 'Minor :sparkles:') ||
+      contains(toJson(github.event.pull_request.labels.*.name), 'Patch :bug:') ||
+      contains(toJson(github.event.pull_request.labels.*.name), 'Skip Version')
 
-    - name: 'Use Node.js'
+    steps:
+    - name: Setup Node.js
       uses: actions/setup-node@v4
       with:
         node-version: 18.x
         registry-url: https://registry.npmjs.org/
-  
-    - uses: actions/checkout@v4
+
+    - name: Checkout base branch
+      uses: actions/checkout@v4
       with:
-        ref: "${{ github.base_ref }}"
-        path: 'main'
-           
-    - name: 'Master Default version'
+        ref: ${{ github.base_ref }}
+        path: main
+
+    - name: Get base version
       run: |
         cd main
-        _pluginVersion=$(node -p "require('./package.json').version")
-        set -e
-        echo "PLUGIN_VERSION=${_pluginVersion}" >> $GITHUB_ENV
-        echo "new version : ${_pluginVersion}"
-        
-    - name: 'Change patch version'
-      if: ${{ contains( github.event.pull_request.labels.*.name, 'Patch :bug:') }}
+        version=$(jq -r '.version' package.json)
+        echo "PLUGIN_VERSION=$version" >> $GITHUB_ENV
+        echo "Base version: $version"
+
+    - name: Bump Patch version
+      if: contains(toJson(github.event.pull_request.labels.*.name), 'Patch :bug:')
       run: |
         cd main
         npm version patch --git-tag-version false
-        _pluginVersion=$(node -p "require('./package.json').version")
-        set -e
-        echo "PLUGIN_VERSION=${_pluginVersion}" >> $GITHUB_ENV
-        echo "new version : ${_pluginVersion}"
-        
-    - name: 'Change Minor version'
-      if: ${{ contains( github.event.pull_request.labels.*.name, 'Minor :sparkles:') }}
+        echo "PLUGIN_VERSION=$(jq -r '.version' package.json)" >> $GITHUB_ENV
+
+    - name: Bump Minor version
+      if: contains(toJson(github.event.pull_request.labels.*.name), 'Minor :sparkles:')
       run: |
         cd main
         npm version minor --git-tag-version false
-        _pluginVersion=$(node -p "require('./package.json').version")
-        set -e
-        echo "PLUGIN_VERSION=${_pluginVersion}" >> $GITHUB_ENV
-        echo "new version : ${_pluginVersion}"
-        
-    - name: 'Change Major version'
-      if: ${{ contains( github.event.pull_request.labels.*.name, 'Major :star2:')}}
+        echo "PLUGIN_VERSION=$(jq -r '.version' package.json)" >> $GITHUB_ENV
+
+    - name: Bump Major version
+      if: contains(toJson(github.event.pull_request.labels.*.name), 'Major :star2:')
       run: |
         cd main
         npm version major --git-tag-version false
-        _pluginVersion=$(node -p "require('./package.json').version")
-        set -e
-        echo "PLUGIN_VERSION=${_pluginVersion}" >> $GITHUB_ENV
-        echo "new version : ${_pluginVersion}"
-        
-    - name: 'Cleanup main'
+        echo "PLUGIN_VERSION=$(jq -r '.version' package.json)" >> $GITHUB_ENV
+
+    - name: Save changelog from base
       run: |
+        cp main/CHANGELOG.md ../CHANGELOG.md
         rm -rf main
-      
-    - name: Get Source branch
-      if: ${{ steps.check_pr_labels_major.outputs.passed }} == true
+
+    - name: Checkout PR source branch
+      uses: actions/checkout@v3
+      with:
+        fetch-depth: ${{ github.event_name == 'pull_request' && 2 || 0 }}
+        
+    - name: Check whatsnew.md update
+      id: whatsnew
+      run: |
+        echo "Changed files: ${{ steps.changed-files.outputs.changed_files }}"
+        if ${{ github.event_name == 'pull_request' }}; then
+              files=$(git diff --name-only -r HEAD^1 HEAD | xargs)
+          else
+              files=$(git diff --name-only ${{ github.event.before }} ${{ github.event.after }} | xargs)
+          fi
+        echo "Changed files: $files"
+        if echo "$files" | grep -q "whatsnew.md"; then
+          echo "passed=true" >> $GITHUB_OUTPUT
+        else
+          echo "passed=false" >> $GITHUB_OUTPUT
+        fi
+
+    - name: Fail if whatsnew.md not updated
+      if: ${{ steps.whatsnew.outputs.passed == 'false' }}
+      run: |
+        echo "::error::You missed updating whatsnew.md with the latest changes."
+        exit 1
+
+    - name: Refetch PR source branch
       uses: actions/checkout@v3
       with:
         ref: "${{ github.head_ref || github.ref_name }}"
-        
-    - name: History
-      if: ${{ steps.check_pr_labels_major.outputs.passed }} == true
-      uses: jitterbit/get-changed-files@v1
-      id: history
 
-    - name: Check whatsnew.md status
-      if: ${{ steps.check_pr_labels_major.outputs.passed }} == true
-      id: whatsnew
+    - name: Update version in package.json
       run: |
-          _isFilechanged=false
-          for changed_file in ${{ steps.history.outputs.modified }}; do
-             if [[ ${changed_file} == *"whatsnew.md"* ]]; then
-                 _isFilechanged=true
-              fi
-          done
-          echo "passed=${_isFilechanged}" >> $GITHUB_OUTPUT
-  
-    - name: Failed whatsnew.md status
-      if: ${{ steps.whatsnew.outputs.passed == 'false'}}
-      run: |
-            echo "::error::You have miss to update whatsnew.md with latest changes"
-            exit 1
+        sed -i "3 s/.*/\t\"version\": \"${PLUGIN_VERSION}\",/" package.json
 
-    - name: 'Update version'
-      if: ${{ steps.check_pr_labels_major.outputs.passed }} == true
+    - name: Update CHANGELOG.md
       run: |
-        sed -i "3 s/.*/\t\"version\":\"${{ env.PLUGIN_VERSION }}\",/" package.json
-        cat package.json
-                     
+        touch update.md
+        echo "## $PLUGIN_VERSION" > update.md
+        cat whatsnew.md >> update.md
+        echo "" >> update.md
+        cat ../CHANGELOG.md >> update.md
+        mv update.md CHANGELOG.md
+
+    - name: Check if branch is dirty
+      id: branchstatus
+      run: |
+        if [[ -n $(git status --porcelain) ]]; then
+          echo "update=true" >> "$GITHUB_OUTPUT"
+        else
+          echo "update=false" >> "$GITHUB_OUTPUT"
+        fi
+
     - name: Commit and push changes
-      if: ${{ steps.check_pr_labels_major.outputs.passed }} == true
+      if: ${{ steps.branchstatus.outputs.update == 'true' }}
       uses: devops-infra/action-commit-push@master
       with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          commit_message: "Updated ${{ env.PLUGIN_VERSION }}"
-          commit_prefix: "[AUTO]"
-          force: false
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        commit_message: "Updated ${{ env.PLUGIN_VERSION }}"
+        commit_prefix: "[AUTO]"
+        force: false
           
   react_ios:
     needs: Versioning
@@ -175,36 +175,4 @@ jobs:
       - name: Run test
         run: |
           npm run build
-          #npm test
-          #yarn example run ios
           
-#   react_android:
-#      needs: react_ios
-#      runs-on: macos-14
-#      steps:
-#        - name: Check out Git repository
-#          uses: actions/checkout@v2
-         
-#        - name: Use Node.js
-#          uses: actions/setup-node@v3
-#          with:
-#           node-version: 16.x
-#           registry-url: https://registry.npmjs.org/
-          
-#        - name: set up JDK 11
-#          uses: actions/setup-java@v1
-#          with:
-#           java-version: 11.0.15  
-          
-#        - name: Build it
-#          run: |
-#           yarn
-#           cd example
-#           yarn
-          
-#        - name: run tests
-#          uses: reactivecircus/android-emulator-runner@v2
-#          with:
-#           api-level: 29
-#           emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim
-#           script: yarn example run android
