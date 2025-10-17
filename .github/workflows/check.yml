@@ -1,0 +1,42 @@
+name: Use granular token
+'on':
+  pull_request:
+    branches:
+      - 'test'
+    types: [labeled, opened, synchronize]
+  workflow_dispatch:
+jobs:
+  package_publish:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Check out Git repository
+        uses: actions/checkout@v4
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          registry-url: 'https://registry.npmjs.org/'
+      - name: Capture plugin version
+        run: |
+          _pluginVersion=$(node -p "require('./package.json').version")
+          echo "PLUGIN_VERSION=${_pluginVersion}" >> $GITHUB_ENV
+          echo "new version : ${_pluginVersion}"
+     
+      - name: Collect dependencies
+        run: |
+          npm install
+          
+      - name: Publish
+        run: |
+          npm publish --tag beta
+        env:
+          NODE_AUTH_TOKEN: ${{secrets.NPM_GRANULAR_TOKEN}}
+          
+      # - name: Create a GitHub release
+      #   uses: ncipollo/release-action@v1
+      #   with:
+      #     tag: ${{ env.PLUGIN_VERSION }}
+      #     name: Release ${{ env.PLUGIN_VERSION }}
+      #     bodyFile: "whatsnew.md"
