@@ -98,11 +98,10 @@ const withSDKDangerousMod: ConfigPlugin<ConfigProps> = (config, props) => {
 
 
 const withSDKXcodeProject =  (config, props) => {
-
   const shellScript = `
-    echo "Remove WoosmapGeofencing signature file"
-    rm -rf "$BUILD_DIR/Release-iphoneos/WoosmapGeofencing.xcframework-ios.signature"
-`;
+  echo "Remove WoosmapGeofencing signature file"
+  rm -rf "$BUILD_DIR/\${CONFIGURATION}-iphoneos/WoosmapGeofencing.xcframework-ios.signature"
+  `;
   return withXcodeProject(config, async (config) => {
     const xcodeProject = config.modResults;
 
