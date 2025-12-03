@@ -2,6 +2,7 @@ import {
   ConfigPlugin,
   withInfoPlist,
   withDangerousMod,
+  withXcodeProject,
 } from "@expo/config-plugins";
 
 import { ConfigProps } from "./types";
@@ -94,10 +95,35 @@ const withSDKDangerousMod: ConfigPlugin<ConfigProps> = (config, props) => {
     },
   ]);
 };
+
+
+const withSDKXcodeProject =  (config, props) => {
+
+  const shellScript = `
+    echo "Remove WoosmapGeofencing signature file"
+    rm -rf "$BUILD_DIR/Release-iphoneos/WoosmapGeofencing.xcframework-ios.signature"
+`;
+  return withXcodeProject(config, async (config) => {
+    const xcodeProject = config.modResults;
+
+    xcodeProject.addBuildPhase(
+      [],
+      'PBXShellScriptBuildPhase',
+      'Remove WoosmapGeofencing signature file',
+      null,
+      {
+        shellPath: '/bin/sh',
+        shellScript,
+      },
+    );
+    return config;
+  });
+};
+
 export const withIOSSdk: ConfigPlugin<ConfigProps> = (config, props) => {
   config = withSDKInfoPlist(config, props);
   //   config = withSDKEntitlements(config, props);
-  //   config = withSDKXcodeProject(config, props);
+  config = withSDKXcodeProject(config, props);
   config = withSDKDangerousMod(config, props);
   return config;
 };
