@@ -97,24 +97,41 @@ const withSDKDangerousMod: ConfigPlugin<ConfigProps> = (config, props) => {
 };
 
 
-const withSDKXcodeProject =  (config, props) => {
-  const shellScript = `
-  echo "Remove WoosmapGeofencing signature file"
-  rm -rf "$BUILD_DIR/\${CONFIGURATION}-iphoneos/WoosmapGeofencing.xcframework-ios.signature"
-  `;
+const withSDKXcodeProject: ConfigPlugin<ConfigProps> =  (config,props) => {
+  
   return withXcodeProject(config, async (config) => {
-    const xcodeProject = config.modResults;
 
-    xcodeProject.addBuildPhase(
+    const xcodeProject = config.modResults;
+    const PHASE_NAME = 'Remove WoosmapGeofencing signature file';
+    const shellScript = `echo "Remove WoosmapGeofencing signature file"
+  rm -rf "$BUILD_DIR/\${CONFIGURATION}-iphoneos/WoosmapGeofencing.xcframework-ios.signature"`;
+
+    // -----------------------------
+    // 1) Prevent duplicate insertion
+    // -----------------------------
+    const existingPhases = xcodeProject.pbxItemByComment(PHASE_NAME, 'PBXShellScriptBuildPhase');
+    if (existingPhases) {
+      console.log(`⚠️ '${PHASE_NAME}' phase already exists, skipping creation.`);
+      return config;
+    }
+
+
+    const phaseUUID =  xcodeProject.addBuildPhase(
       [],
       'PBXShellScriptBuildPhase',
-      'Remove WoosmapGeofencing signature file',
+      PHASE_NAME,
       null,
       {
         shellPath: '/bin/sh',
         shellScript,
       },
     );
+
+    // Patch the field manually
+    const phase = xcodeProject.pbxItemByComment(PHASE_NAME, 'PBXShellScriptBuildPhase');//pbxShellScriptBuildPhaseObj(phaseUUID);
+    phase.runOnlyForDeploymentPostprocessing = 1;
+    console.log(`✅ Added '${PHASE_NAME}' phase to Xcode project.`);
+
     return config;
   });
 };
@@ -122,7 +139,7 @@ const withSDKXcodeProject =  (config, props) => {
 export const withIOSSdk: ConfigPlugin<ConfigProps> = (config, props) => {
   config = withSDKInfoPlist(config, props);
   //   config = withSDKEntitlements(config, props);
-  config = withSDKXcodeProject(config, props);
+  config = withSDKXcodeProject(config,props);
   config = withSDKDangerousMod(config, props);
   return config;
 };
