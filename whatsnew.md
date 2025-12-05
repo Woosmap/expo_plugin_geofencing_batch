@@ -1,1 +1,1 @@
-* Enhancement: Update Xcode project to add add new script while installing app with device
+* Enhancement: Update the Xcode project to add a new script when installing the app on a device.
