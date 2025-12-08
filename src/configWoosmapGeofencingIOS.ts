@@ -130,8 +130,7 @@ const withSDKXcodeProject: ConfigPlugin<ConfigProps> =  (config,props) => {
     // Patch the field manually
     const phase = xcodeProject.pbxItemByComment(PHASE_NAME, 'PBXShellScriptBuildPhase');//pbxShellScriptBuildPhaseObj(phaseUUID);
     phase.runOnlyForDeploymentPostprocessing = 1;
-    console.log(`✅ Added '${PHASE_NAME}' phase to Xcode project.`);
-
+    
     return config;
   });
 };
