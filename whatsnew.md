@@ -1,1 +1,1 @@
-* Enhancement: Fine-tune android permissions
+* Enhancement: Update the Xcode project to add a new script when installing the app on a device.
