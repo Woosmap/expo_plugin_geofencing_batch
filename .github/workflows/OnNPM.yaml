@@ -21,7 +21,7 @@ jobs:
         with:
           node-version: 20
           registry-url: 'https://registry.npmjs.org/'
-          always-auth: true
+          always-auth: false
       
       - name: Capture plugin version
         run: |
@@ -38,7 +38,7 @@ jobs:
       - name: Publish
         run: |
           npm config list
-          # npm publish --provenance --access public --tag beta
+          npm publish --provenance --access public --tag beta
         # env:
         #   NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
           
