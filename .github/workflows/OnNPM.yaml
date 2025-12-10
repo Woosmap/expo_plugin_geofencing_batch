@@ -37,7 +37,8 @@ jobs:
           
       - name: Publish
         run: |
-          npm publish --provenance --access public --tag beta
+          npm config list
+          # npm publish --provenance --access public --tag beta
         # env:
         #   NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
           
