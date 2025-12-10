@@ -22,7 +22,15 @@ jobs:
           node-version: 20
           registry-url: 'https://registry.npmjs.org/'
           always-auth: false
-      
+          token: ""
+
+      # Debug: list all .npmrc files
+      - run: |
+          echo "Listing .npmrc files"
+          find /home/runner -name ".npmrc" -print
+          echo "---- contents ----"
+          find /home/runner -name ".npmrc" -exec sh -c 'echo "---"; cat {}; echo "---"' \;
+          
       - name: Capture plugin version
         run: |
           _pluginVersion=$(node -p "require('./package.json').version")
@@ -32,7 +40,6 @@ jobs:
       - name: Collect dependencies
         run: |
           npm install
-          npm ci
           npm run build
           
       - name: Publish
