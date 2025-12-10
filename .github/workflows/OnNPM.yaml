@@ -21,6 +21,8 @@ jobs:
         with:
           node-version: 20
           registry-url: 'https://registry.npmjs.org/'
+          always-auth: true
+      
       - name: Capture plugin version
         run: |
           _pluginVersion=$(node -p "require('./package.json').version")
