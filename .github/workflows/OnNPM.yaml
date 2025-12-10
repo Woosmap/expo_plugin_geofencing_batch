@@ -12,6 +12,7 @@ jobs:
     permissions:
       contents: write
       id-token: write  # Required for OIDC
+    
     steps:
       - name: Check out Git repository
         uses: actions/checkout@v4
