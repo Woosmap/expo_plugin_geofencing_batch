@@ -19,9 +19,9 @@ jobs:
       - name: Use Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 24
           registry-url: https://registry.npmjs.org/
-          always-auth: true
+          # always-auth: true
   
 
       # Debug: list all .npmrc files
@@ -40,10 +40,10 @@ jobs:
       - name: Collect dependencies
         run: |
           npm install
-          npm run build
+          npm run build --if-present
           
       - name: Publish
         run: |
           npm config list
-          npm publish --provenance --access public --tag beta
+          npm publish --access public --tag beta
         
