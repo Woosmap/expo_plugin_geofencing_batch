@@ -15,14 +15,14 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/Woosmap/geofencing-react-native-plugin.git"
+    "url": "https://github.com/Woosmap/expo_plugin_geofencing_batch.git"
   },
   "bugs": {
-    "url": "https://github.com/Woosmap/geofencing-react-native-plugin/issues"
+    "url": "https://github.com/Woosmap/expo_plugin_geofencing_batch/issues"
   },
   "author": "Woosmap <operations@woosmap.com> (https://www.woosmap.com/en/contact)",
   "license": "MIT",
-  "homepage": "https://github.com/Woosmap/geofencing-react-native-plugin#readme",
+  "homepage": "https://github.com/Woosmap/expo_plugin_geofencing_batch#readme",
   "scripts": {
     "build": "expo-module build",
     "clean": "expo-module clean"
