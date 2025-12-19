@@ -1,0 +1,55 @@
+name: Publish Expo plugin Using OIDC token - NPM Repo
+'on':
+  pull_request:
+    branches:
+      - 'test'
+    types: [labeled, opened,  synchronize]
+  workflow_dispatch:
+jobs:
+  package_publish:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      id-token: write  # Required for OIDC
+    
+    steps:
+      - name: Check out Git repository
+        uses: actions/checkout@v4
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          registry-url: 'https://registry.npmjs.org/'
+  
+
+      # Debug: list all .npmrc files
+      - run: |
+          echo "Listing .npmrc files"
+          find /home/runner -name ".npmrc" -print
+          echo "---- contents ----"
+          find /home/runner -name ".npmrc" -exec sh -c 'echo "---"; cat {}; echo "---"' \;
+          
+      - name: Capture plugin version
+        run: |
+          _pluginVersion=$(node -p "require('./package.json').version")
+          echo "PLUGIN_VERSION=${_pluginVersion}" >> $GITHUB_ENV
+          echo "new version : ${_pluginVersion}"
+     
+      - name: Collect dependencies
+        run: |
+          npm install
+          npm run build
+          
+      - name: Publish
+        run: |
+          npm config list
+          npm publish --provenance --access public --tag beta
+        # env:
+        #   NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
+          
+      # - name: Create a GitHub release
+      #   uses: ncipollo/release-action@v1
+      #   with:
+      #     tag: ${{ env.PLUGIN_VERSION }}
+      #     name: Release ${{ env.PLUGIN_VERSION }}
+      #     bodyFile: "whatsnew.md"
