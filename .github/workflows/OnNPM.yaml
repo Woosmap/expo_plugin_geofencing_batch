@@ -34,7 +34,7 @@ jobs:
           
       - name: Publish
         run: |
-          npm publish --access public
+          npm publish --access public --tag beta 
         
           
       - name: Create a GitHub release
