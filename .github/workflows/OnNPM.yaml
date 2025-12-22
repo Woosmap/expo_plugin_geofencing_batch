@@ -1,4 +1,4 @@
-name: Publish Expo plugin - NPM Repo
+name: Publish plugin - Expo Module
 'on':
   push:
     branches:
@@ -36,8 +36,7 @@ jobs:
       - name: Publish
         run: |
           npm publish --access public --tag beta 
-        
-          
+       
       - name: Create a GitHub release
         uses: ncipollo/release-action@v1
         with:
