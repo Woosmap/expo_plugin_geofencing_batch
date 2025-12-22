@@ -1,1 +1,1 @@
-* Enhancement: Update the Xcode project to add a new script when installing the app on a device.
+* Enhancement: Update publishing process workflow
