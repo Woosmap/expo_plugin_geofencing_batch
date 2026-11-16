@@ -1,1 +1,1 @@
-* Enhancement: Update publishing process workflow
+* Security: bump transitive `node-forge` in `package-lock.json` to 1.4.3 (closes Dependabot alerts GHSA-6qrw-m8cv-hcxf and related). Repo hygiene only — `node-forge` is not shipped.
