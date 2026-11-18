@@ -132,7 +132,7 @@ jobs:
           
   react_ios:
     needs: Versioning
-    runs-on: macos-14
+    runs-on: macos-15
     steps:
       - name: Check out Git repository
         uses: actions/checkout@v4
