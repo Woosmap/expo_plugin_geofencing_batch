@@ -1,1 +1,1 @@
-* Enhancement: Update publishing process workflow
+* Chore: stop tracking `package-lock.json` (already gitignored); resolves transitive `node-forge` Dependabot alerts. Dev-only, not shipped.
