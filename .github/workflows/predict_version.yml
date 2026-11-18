@@ -104,6 +104,7 @@ jobs:
         sed -i "3 s/.*/\t\"version\": \"${PLUGIN_VERSION}\",/" package.json
 
     - name: Update CHANGELOG.md
+      if: ${{ !contains(toJson(github.event.pull_request.labels.*.name), 'Skip Version') }}
       run: |
         touch update.md
         echo "## $PLUGIN_VERSION" > update.md
@@ -111,6 +112,11 @@ jobs:
         echo "" >> update.md
         cat ../CHANGELOG.md >> update.md
         mv update.md CHANGELOG.md
+
+    - name: Keep CHANGELOG.md from base (Skip Version)
+      if: ${{ contains(toJson(github.event.pull_request.labels.*.name), 'Skip Version') }}
+      run: |
+        cp ../CHANGELOG.md CHANGELOG.md
 
     - name: Check if branch is dirty
       id: branchstatus
@@ -123,16 +129,18 @@ jobs:
 
     - name: Commit and push changes
       if: ${{ steps.branchstatus.outputs.update == 'true' }}
-      uses: devops-infra/action-commit-push@master
-      with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        commit_message: "Updated ${{ env.PLUGIN_VERSION }}"
-        commit_prefix: "[AUTO]"
-        force: false
+      env:
+        TARGET_BRANCH: ${{ github.head_ref || github.ref_name }}
+      run: |
+        git config user.name "github-actions[bot]"
+        git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+        git add -A
+        git commit -m "[AUTO]Updated ${PLUGIN_VERSION}"
+        git push origin "HEAD:${TARGET_BRANCH}"
           
   react_ios:
     needs: Versioning
-    runs-on: macos-14
+    runs-on: macos-15
     steps:
       - name: Check out Git repository
         uses: actions/checkout@v4
