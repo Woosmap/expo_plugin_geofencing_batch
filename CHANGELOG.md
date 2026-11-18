@@ -1,6 +1,4 @@
 ## 1.1.1
-* Chore: stop tracking `package-lock.json` (already gitignored); resolves transitive `node-forge` Dependabot alerts. Dev-only, not shipped.
-## 1.1.1
 * Enhancement: Update publishing process workflow
 ## 1.1.0
 * Enhancement: Update the Xcode project to add a new script when installing the app on a device.
