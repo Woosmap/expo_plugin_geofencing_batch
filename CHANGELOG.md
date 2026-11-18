@@ -1,3 +1,5 @@
+## 1.1.2
+* Test: validate native git commit/push in versioning workflow (throwaway, do not merge)
 ## 1.1.1
 * Enhancement: Update publishing process workflow
 ## 1.1.0
